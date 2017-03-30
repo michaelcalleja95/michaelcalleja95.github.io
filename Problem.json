@@ -1,0 +1,2 @@
+[{"instructions":["load a R1","inc R1","store R1 a"]},
+{"instructions":["load a R1","dec R1","store R1 a"]}]

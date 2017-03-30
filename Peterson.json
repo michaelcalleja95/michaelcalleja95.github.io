@@ -1,0 +1,2 @@
+[{"instructions":["set R1 1","store R1 flag1","set R2 1","store R2 turn","load flag2 R3","jmpe R3 1 224","goto 288","load turn R4","jmpe R4 1 128","load a R1","inc R1","store R1 a","set R1 0","store R1 flag1","inc R2"],"tstart":0},
+{ "instructions":["set R1 1","store R1 flag2","set R2 0","store R2 turn","load flag1 R3","jmpe R3 1 224","goto 288","load turn R4","jmpe R4 0 128","load a R1","dec R1","store R1 a","set R1 0","store R1 flag2","inc R2"],"tstart":0}]
