@@ -203,6 +203,10 @@ function animate() {
             row.children[6].textContent = processControlBlock[i].pc;
             row.children[7].textContent = processControlBlock[i].lastCPUTime;
 
+            row.children[9].textContent = processControlBlock[i].priority;
+            row.children[10].textContent = processControlBlock[i].nextCPUCycle;
+            row.children[11].textContent = processControlBlock[i].lastCPUCycle;
+
             if(processControlBlock[i].cpuRegisters!==undefined)
             {
                 var registersString ="";

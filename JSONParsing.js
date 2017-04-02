@@ -22,21 +22,28 @@ function  readConfigFromFile(e) {
     reader.onload = function(e) {
         var contents = e.target.result;
         // Display file content
-        console.log(contents);
-        configList=JSON.parse(contents);
-        document.getElementById("userCreated").value = configList.scheduler;
-        document.getElementById("algorithmSelection").value = configList.choice;
 
-        for(var i =0;i<configList.devices.length;i++)
-        {
-            createDevice(configList.devices[i]);
-        }
-        for(var i =0;i<configList.semaphores.length;i++)
-        {
-            createSemaphore(configList.semaphores[i].name,parseInt(configList.semaphores[i].value));
-        }
+        loadConfig(contents)
+
     };
     reader.readAsText(file);
+}
+
+function loadConfig(contents)
+{
+    configList=JSON.parse(contents);
+    console.log(configList);
+    document.getElementById("userCreated").value = configList.scheduler;
+    document.getElementById("algorithmSelection").value = configList.choice;
+
+    for(var i =0;i<configList.devices.length;i++)
+    {
+        createDevice(configList.devices[i]);
+    }
+    for(var i =0;i<configList.semaphores.length;i++)
+    {
+        createSemaphore(configList.semaphores[i].name,parseInt(configList.semaphores[i].value));
+    }
 }
 
 /**
@@ -92,7 +99,7 @@ function displayContents(contents) {
                     //initial state set to start
                     process.state = "START";
                     process.lastCPUTime = process.tstart;
-                    process.nextCPUCycle = 10;
+                    process.nextCPUCycle = parseInt(configList.tau0);
                     process.lastCPUCycle = 0;
 
                     //creates row for each table
@@ -107,6 +114,9 @@ function displayContents(contents) {
                     row.insertCell(6);
                     row.insertCell(7);
                     row.insertCell(8);
+                    row.insertCell(9);
+                    row.insertCell(10);
+                    row.insertCell(11);
                     animate();
                 }
             };

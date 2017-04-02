@@ -1,2 +1,4 @@
 {"scheduler":"var newID=-1;\nvar minStartTime = 10000;\nfor (var i = 0; i < processControlBlock.length; i++)\n{\n    if (processControlBlock[i].state ===\"START\" || \n           processControlBlock[i].state ===\"READY\")\n    {\n        if(parseInt(processControlBlock[i].lastCPUTime) \n              <minStartTime)\n        {\n            minStartTime = \n                parseInt(processControlBlock[i].lastCPUTime);\n            newID = processControlBlock[i].id;\n        }\n    }\n}\nreturn newID;","choice":"User Created","semaphores":[{"name":"s1","value":1},{"name":"s2","value":"1"}],
-"devices":["device1","device2","device3"]}
+"devices":["device1","device2","device3"],
+"alpha":"0.5",
+"tau0":10}

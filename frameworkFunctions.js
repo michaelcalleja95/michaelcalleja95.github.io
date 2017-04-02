@@ -35,7 +35,7 @@ function jump(address)
 {
     currentlyExecutingProcess.pc = currentlyExecutingProcess.baseRegister+parseInt(address)-32;
     if(currentlyExecutingProcess.pc>currentlyExecutingProcess.limitRegister
-        || currentlyExecutingProcess.pc<currentlyExecutingProcess.baseRegister)
+        || currentlyExecutingProcess.pc<currentlyExecutingProcess.baseRegister-32)
         alert("exceeded memory bounds of the process");
 }
 

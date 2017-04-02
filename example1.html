@@ -57,6 +57,9 @@
             <td width="80px">PC</td>
             <td width="100px">Last Used CPU</td>
             <td width="120px">Registers</td>
+            <td width="80px">Priority</td>
+            <td width="80px">&#x03C4;n+1</td>
+            <td width="80px">tn</td>
         </tr>
     </table>
 </div>
@@ -134,9 +137,20 @@
 <script type="text/javascript" src="ExtendedSim.js"></script>
 <script type="text/javascript" src="frameworkFunctions.js"></script>
 <script type="text/javascript" src="process_mm1.js"></script>
+
 <script type="text/javascript" src="JSONParsing.js"></script>
 <script type="text/javascript" src="CustomScheduler.js"></script>
 <script type="text/javascript" src="instructionList.js"></script>
+<script type="text/javascript">
+    loadConfig('{"scheduler":"var newID=-1;var minStartTime = 10000;for (var i = 0; i < processControlBlock.length; i++){    if(processControlBlock[i].state ===START ||            processControlBlock[i].state ===READY)    {        if(parseInt(processControlBlock[i].lastCPUTime)               <minStartTime)        {            minStartTime =                 parseInt(processControlBlock[i].lastCPUTime);            newID = processControlBlock[i].id;        }    }}return newID;","choice":"FCFS","semaphores":[{"name":"s1","value":1},{"name":"s2","value":"1"}],"devices":["device1","device2","device3"],            "alpha":"0.5",            "tau0":10}');
+
+    instructionList=JSON.parse('[{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":1}]');
+    populateInstructionList();
+    displayInstructionImplementation();
+
+    displayContents('[{"instructions":["set R1 22","inc R1","inc R1","inc R1"],"tstart":0},    {"priority":"1","instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","yield","inc R1","inc R1"],"tstart":0},{"instructions":["set R2 0","inc R2","jmplt R2 5 32","store R2 b"],"tstart":0}]');
+</script>
+
 </body>
 </html>
 
