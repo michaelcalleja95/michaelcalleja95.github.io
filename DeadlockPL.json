@@ -1,2 +1,1 @@
-[{"instructions":["//This is an example of a deadlock","load a R1","wait s1","wait s2","set R2 22","signal s1","signal s2"],"tstart":0},{"priority":"1","instructions":["wait s2","wait s1","set a R3","signal s2","signal s1"],"tstart":0}
-,{"priority":"1","instructions":["set a R3","set a R3","set a R3","set a R3","set a R3"],"tstart":20}]
+[{"instructions":["//This is an example of a deadlock","load a R1","wait s1","wait s2","set R2 22","signal s1","signal s2"],"tstart":0},{"priority":"1","instructions":["wait s2","wait s1","set a R3","signal s2","signal s1"],"tstart":0}]

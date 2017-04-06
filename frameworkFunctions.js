@@ -10,7 +10,7 @@ function preempt()
     if(currentlyExecutingProcess.pc-32 === currentlyExecutingProcess.limitRegister && currentlyExecutingProcess.state !== "WAIT")
     {
         currentlyExecutingProcess.state = "TERMINATED";
-        currentlyExecutingProcess.finishTime = sim.time();
+        currentlyExecutingProcess.finishTime = sim.time()-currentlyExecutingProcess.tstart;
     }
     else
     {
@@ -45,7 +45,7 @@ function jump(address)
 function endprocess()
 {
     currentlyExecutingProcess.state = "TERMINATED";
-    currentlyExecutingProcess.finishTime = sim.time();
+    currentlyExecutingProcess.finishTime = sim.time()-currentlyExecutingProcess.tstart;
 }
 
 /**
@@ -151,6 +151,7 @@ function createDevice(device)
 function iowait(device)
 {
     var found = false;
+    boolean_is_io_called = true;
     for(var i =0;i<devices.length;i++)
     {
         if(device === devices[i].name)

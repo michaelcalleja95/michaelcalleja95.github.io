@@ -137,9 +137,23 @@
 <script type="text/javascript" src="ExtendedSim.js"></script>
 <script type="text/javascript" src="frameworkFunctions.js"></script>
 <script type="text/javascript" src="process_mm1.js"></script>
+
 <script type="text/javascript" src="JSONParsing.js"></script>
 <script type="text/javascript" src="CustomScheduler.js"></script>
 <script type="text/javascript" src="instructionList.js"></script>
+<script type="text/javascript">
+    loadConfig('{"scheduler":"","choice":"RR","semaphores":[],"devices":[],            "alpha":"0.5",            "tau0":10}');
+
+    sharedVariables.push({"name":"a", "value":5});
+
+    instructionList=JSON.parse('[{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":1}]');
+    populateInstructionList();
+    displayInstructionImplementation();
+
+    displayContents('[{"instructions":["//process equivalent to a++","load a R1","inc R1","store R1 a"]},    {"instructions":["//process equivalent to a--","load a R1","dec R1","store R1 a"]}]');
+
+</script>
+
 </body>
 </html>
 

@@ -2,6 +2,10 @@ var sim = new Sim();
 var stats = new Sim.Population();
 var cpu = new Sim.Facility('CPU');
 
+var initial_start_bool = false;
+
+var boolean_is_io_called = false;
+
 //boolean for manual step and automated step
 var boolean_stop = true;
 
@@ -34,10 +38,9 @@ var preempted = false;
 
 //arrays that will store the list of variables and the list of registers
 var sharedVariables =[];
-sharedVariables.push({"name":"a", "value":5});
-sharedVariables.push({"name":"b", "value":15});
-sharedVariables.push({"name":"flag1", "value":0});
-sharedVariables.push({"name":"flag2", "value":0});
+//
+// sharedVariables.push({"name":"flag1", "value":0});
+// sharedVariables.push({"name":"flag2", "value":0});
 var registers =[];
 
 //stores the list of instructions currently in memory with their type, size and corresponding process
@@ -53,6 +56,12 @@ function startAutomatedStep(){
     //sets flag then starts loop
     //Issue with pressing multiple Automated steps
     //manualStep();
+    if(initial_start_bool=== false)
+    {
+        initial_start_bool = true;
+        preempt();
+    }
+
     boolean_stop = false;
     automatedStep();
 }
@@ -64,6 +73,13 @@ function startAutomatedStep(){
 function automatedStep() {
     if(!boolean_stop){
         //each step is similiar to the manual step
+
+        //temporary assumption that IOwait will only last for 1 event
+        if(boolean_is_io_called ===true)
+        {
+            boolean_is_io_called = false;
+            iosignal("device1");
+        }
 
         sim.unitStep();
         if(currentlyExecutingInstruction==="")
@@ -96,6 +112,15 @@ function animate() {
     }
     //loops through the instructionsInMemory and changes their colour if they refer to the current exectuing process
     //or to the PC
+    var titlerow = instructionlist.insertRow();
+    var titlecell0 =titlerow.insertCell(0);
+    titlecell0.style.width="10px";
+    var titlecell1 =titlerow.insertCell(1);
+    titlecell1.innerHTML = "instruction";
+
+    var titlecell2 =titlerow.insertCell(2);
+    titlecell2.innerHTML = "address";
+
     for (var i = 0; i < instructionsInMemory.length; i++) {
         var row = instructionlist.insertRow();
         var cell1 =row.insertCell(0);

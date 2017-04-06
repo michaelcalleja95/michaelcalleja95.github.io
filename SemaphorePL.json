@@ -1,2 +1,1 @@
-[{"instructions":["load a R1","wait s1","inc R1","set R2 22","signal s1","inc R2"],"tstart":0},{"priority":"1","instructions":["inc R2","wait s1","set a R3","signal s1","set a R3"],"tstart":0}
-,{"priority":"1","instructions":["inc R2","wait s1","set a R3","signal s1","set a R3"],"tstart":0}]
+[{"instructions":["wait s1","load a R1","inc R1","store R1 a","signal s1"],"tstart":0},{"priority":"1","instructions":["wait s1","load a R1","inc R1","store R1 a","signal s1"],"tstart":0}]

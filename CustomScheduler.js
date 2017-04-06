@@ -114,7 +114,7 @@ Sim.Facility.prototype.useCustomSchedulerCallback = function (a) {
     if(currentlyExecutingProcess.pc === currentlyExecutingProcess.limitRegister)
     {
         currentlyExecutingProcess.state = "TERMINATED";
-        currentlyExecutingProcess.finishTime = sim.time();
+        currentlyExecutingProcess.finishTime = sim.time()-currentlyExecutingProcess.tstart;
     }
 
     //increments pc and process's pc
@@ -214,7 +214,7 @@ function scheduleNewProcess()
             {
                 if(parseInt(processControlBlock[i].nextCPUCycle)<minCPUCycles)
                 {
-                    minCPUCycles = parseInt(processControlBlock[i].nextCPUCycle);
+                    minCPUCycles = parseFloat(processControlBlock[i].nextCPUCycle);
                     newID = processControlBlock[i].id;
                 }
             }
