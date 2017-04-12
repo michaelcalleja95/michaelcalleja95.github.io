@@ -49,6 +49,9 @@ var instructionsInMemory =[];
 //refers to the last value of the memory currently used to assign new addresses at the end
 var endPointer = 0;
 
+var boldlist = [];
+var hiddenlist = [];
+
 /**
  * boolean stop is set to false to allow for automatic steps
  */
@@ -104,28 +107,57 @@ function automatedStep() {
  */
 function animate() {
 
+    var tbl  = document.getElementById('pcbTable');
+    var rows = tbl.getElementsByTagName('tr');
+
+    for (var row=0; row<rows.length;row++) {
+        var cels = rows[row].getElementsByTagName('td');
+        for(var i =0;i<boldlist.length;i++)
+        {
+            cels[parseInt(boldlist[i])].style.fontWeight = 'bold';
+        }
+        for(var i =0;i<hiddenlist.length;i++)
+        {
+            cels[parseInt(hiddenlist[i])].style.display="none";
+        }
+    }
+
     //animating the instructions in memory by redrawing the instructionsInMemory array
     var instructionlist = document.getElementById('memoryList');
     //first clears the list
     while(instructionlist.firstChild) {
-        instructionlist.removeChild(instructionlist.firstChild);
+            instructionlist.removeChild(instructionlist.firstChild);
     }
     //loops through the instructionsInMemory and changes their colour if they refer to the current exectuing process
     //or to the PC
     var titlerow = instructionlist.insertRow();
     var titlecell0 =titlerow.insertCell(0);
-    titlecell0.style.width="10px";
+    titlecell0.innerHTML = "PID";
     var titlecell1 =titlerow.insertCell(1);
-    titlecell1.innerHTML = "instruction";
-
+    titlecell1.style.width="10px";
     var titlecell2 =titlerow.insertCell(2);
-    titlecell2.innerHTML = "address";
+    titlecell2.innerHTML = "instruction";
+
+    var titlecell3 =titlerow.insertCell(3);
+    titlecell3.innerHTML = "address";
 
     for (var i = 0; i < instructionsInMemory.length; i++) {
         var row = instructionlist.insertRow();
-        var cell1 =row.insertCell(0);
+        var cell0 =row.insertCell(0);
+        var cell1 =row.insertCell(1);
         cell1.className="firstRow";
-        var cell2 =row.insertCell(1);
+        var cell2 =row.insertCell(2);
+
+        if(instructionsInMemory[i].isComment !== true)
+        {
+            for(var j=0;j<processControlBlock.length;j++)
+            {
+                if(instructionsInMemory[i].address === processControlBlock[j].baseRegister)
+                {
+                    cell0.innerHTML = processControlBlock[j].id;
+                }
+            }
+        }
 
         //comments are formatted differently
         if(instructionsInMemory[i].isComment === true)
@@ -138,7 +170,7 @@ function animate() {
         }
         else
         {
-            var cell3 =row.insertCell(2);
+            var cell3 =row.insertCell(3);
             cell2.innerHTML= instructionsInMemory[i].instruction;
             cell3.innerHTML= instructionsInMemory[i].address;
             if(instructionsInMemory[i].process === currentlyExecutingInstruction.process)
@@ -231,6 +263,7 @@ function animate() {
             row.children[9].textContent = processControlBlock[i].priority;
             row.children[10].textContent = processControlBlock[i].nextCPUCycle;
             row.children[11].textContent = processControlBlock[i].lastCPUCycle;
+            row.children[12].textContent = processControlBlock[i].waitingTime;
 
             if(processControlBlock[i].cpuRegisters!==undefined)
             {
@@ -248,4 +281,8 @@ function animate() {
             }
         }
     }
+}
+
+function myFunction() {
+    location.reload();
 }

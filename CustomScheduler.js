@@ -3,7 +3,9 @@
  * and possibly deciding the ew process to schedule.
  */
 Sim.Facility.prototype.customScheduler = function () {
-    if (this.maxqlen === 0 && !this.free || this.maxqlen > 0 && this.queue.size() >= this.maxqlen)instruction.msg = -1, instruction.deliverAt = instruction.entity.time(), instruction.entity.sim.queue.insert(instruction); else {
+    if (this.maxqlen === 0 && !this.free || this.maxqlen > 0 && this.queue.size() >= this.maxqlen)
+        instruction.msg = -1, instruction.deliverAt = instruction.entity.time(), instruction.entity.sim.queue.insert(instruction);
+    else {
 
         //preempts if necessary
         if(timeSliceCounter >=parseInt(document.getElementById('timeSlice').value)
@@ -309,6 +311,7 @@ function scheduleNewProcess()
 
             processControlBlock[i].state = "RUNNING";
             currentlyExecutingProcess = processControlBlock[i];
+            currentlyExecutingProcess.waitingTime+=parseInt(sim.time()) - parseInt(currentlyExecutingProcess.lastCPUTime);
             return;
         }
     }

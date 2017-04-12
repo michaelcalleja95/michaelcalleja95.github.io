@@ -1,2 +1,0 @@
-[{"instructions":["set R1 22","inc R1","inc R1","inc R1"],"tstart":0},
-{"priority":"1","instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1"],"tstart":0}]

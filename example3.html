@@ -17,29 +17,30 @@
 </div>
 <div id="simulationSetup" style="width: 80vw">
     <div style=" display: inline-block; width:200px;">
-        <button onclick="startAutomatedStep()">Start</button>
-        <button onclick="boolean_stop = true">Stop</button>
+        <button onclick="startAutomatedStep()">Play</button>
+        <button onclick="boolean_stop = true">Pause</button>
         <button onclick="preempt()">Yield</button>
+        <button onclick="myFunction()">Reload page</button>
         <br>
         <br>
-        <a onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
+        <a style="display: none" onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
         <br>
-        <a onclick="createJSON(this,configList,'ConfigList');"><i></i> Create Config JSON</a>
+        <a style="display: none" onclick="createJSON(this,configList,'ConfigList');"><i></i> Create Config JSON</a>
         <br>
-        <a onclick="createJSON(this,instructionList,'InstructionList');"><i></i> Create Instruction JSON</a>
+        <a style="display: none" onclick="createJSON(this,instructionList,'InstructionList');"><i></i> Create Instruction JSON</a>
         <br>
         <br>
     </div>
     <div style="display: inline-block; float: right; width:350px;">
-        <div>
+        <div style="display: none" >
             Process:<input type="file" id="process-input" style="float: right">
         </div>
         <br>
-        <div>
+        <div style="display: none" >
             Config: <input type="file" id="config-input" style="float: right">
         </div>
         <br>
-        <div>
+        <div style="display: none" >
             Instruction Set: <input type="file" id="instruction-definitions" style="float: right" >
         </div>
     </div>
@@ -60,6 +61,7 @@
             <td width="80px">Priority</td>
             <td width="80px">&#x03C4;n+1</td>
             <td width="80px">tn</td>
+            <td width="100px">Waiting Time</td>
         </tr>
     </table>
 </div>
@@ -67,23 +69,21 @@
 
 <div>
     <div style="display: inline-block; float: left; width:600px; ">
-        <select id="instructionList" onchange="displayInstructionImplementation()" style="vertical-align: top;"></select>
-        <button id="newInstruction" onclick = "createNewInstructionType()" style="vertical-align: top;">Create a new Instruction </button>
+        <select id="instructionList" onchange="displayInstructionImplementation()" style="display: none; vertical-align: top;"></select>
+        <button id="newInstruction" onclick = "createNewInstructionType()" style="display: none; vertical-align: top;">Create a new Instruction </button>
         <br>
-        <textarea id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
+        <textarea style="display: none"  id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
         <br>
         <select id="algorithmSelection" style="vertical-align: top;">
             <option value="FCFS">FCFS</option>
             <option value="SJF">SJF</option>
             <option value="RR">RR</option>
             <option value="Priority">Priority</option>
-            <option value="User Created">User Created</option>
-            <option value="Runtime">Runtime</option>
         </select>
 
         Time Slice(RR only): <input id="timeSlice" style="vertical-align: top;" type="text" name="timeSlice" value="1">
         <br>
-        <textarea id="userCreated" name="userCreated" onblur="saveSchedulingAlgorithm()" cols="60" rows="20"></textarea>
+        <textarea style="display: none" id="userCreated" name="userCreated" onblur="saveSchedulingAlgorithm()" cols="60" rows="20"></textarea>
     </div>
 
     <div style=" display: inline-block; width:200px; vertical-align: top">
@@ -109,7 +109,7 @@
         </div>
         <br>
         <br>
-        <div style="display: inline-block; width:200px;">
+        <div style="display: none; width:200px;">
             <div style="display: inline-block; float: left; width:100px; vertical-align: top">
                 Semaphores:
             </div>
@@ -120,7 +120,7 @@
         </div>
         <br>
         <br>
-        <div style="display: inline-block; width:200px;">
+        <div style="display: none; width:200px;">
             <div style="display: inline-block; float: left; width:100px; vertical-align: top">
                 Devices:
             </div>
@@ -136,23 +136,26 @@
 <script type="text/javascript" src="sim-0.26.js"></script>
 <script type="text/javascript" src="ExtendedSim.js"></script>
 <script type="text/javascript" src="frameworkFunctions.js"></script>
-<script type="text/javascript" src="process_mm1.js"></script>
+<script type="text/javascript" src="simulation.js"></script>
 
 <script type="text/javascript" src="JSONParsing.js"></script>
 <script type="text/javascript" src="CustomScheduler.js"></script>
 <script type="text/javascript" src="instructionList.js"></script>
 <script type="text/javascript">
-    loadConfig('{"scheduler":"","choice":"FCFS","semaphores":[],"devices":[],            "alpha":"0.5",            "tau0":10}');
+    loadConfig('{"scheduler":"","choice":"SJF","semaphores":[],"devices":["device1"],            "alpha":"0.5",            "tau0":4}');
 
     sharedVariables.push({"name":"a", "value":0});
     sharedVariables.push({"name":"b", "value":0});
 
-    instructionList=JSON.parse('[{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":1}]');
+    instructionList=JSON.parse('[{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":0}]');
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["set R1 22","inc R1","inc R1","store R1 a"],"tstart":0,"priority":1},    {"instructions":["set R1 22","inc R1","inc R1","inc R1","store R1 a"],"tstart":0},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":0,"priority":2},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":0,"priority":2}]');
+    displayContents('[{"instructions":["load a R1","inc R1","inc R1","inc R1","inc R1","useio device1","inc R1","inc R1","useio device1","inc R1"],"tstart":0},    {"instructions":["load a R1","inc R1","inc R1","inc R1","inc R1","inc R1","useio device1","inc R1","inc R1","useio device1","inc R1"],"tstart":0},   {"instructions":["load a R1","inc R1","inc R1","useio device1","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","useio device1","inc R1"],"tstart":0}, {"instructions":["load a R1","inc R1","inc R1","useio device1","inc R1","inc R1","useio device1","inc R1"],"tstart":0}]');
 
+    boldlist = [5,10,11];
+    hiddenlist = [2,7,9,12];
+    animate();
 </script>
 
 </body>

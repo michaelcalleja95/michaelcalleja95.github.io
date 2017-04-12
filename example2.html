@@ -17,29 +17,30 @@
 </div>
 <div id="simulationSetup" style="width: 80vw">
     <div style=" display: inline-block; width:200px;">
-        <button onclick="startAutomatedStep()">Start</button>
-        <button onclick="boolean_stop = true">Stop</button>
+        <button onclick="startAutomatedStep()">Play</button>
+        <button onclick="boolean_stop = true">Pause</button>
         <button onclick="preempt()">Yield</button>
+        <button onclick="myFunction()">Reload page</button>
         <br>
         <br>
-        <a onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
+        <a style="display: none" onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
         <br>
-        <a onclick="createJSON(this,configList,'ConfigList');"><i></i> Create Config JSON</a>
+        <a style="display: none" onclick="createJSON(this,configList,'ConfigList');"><i></i> Create Config JSON</a>
         <br>
-        <a onclick="createJSON(this,instructionList,'InstructionList');"><i></i> Create Instruction JSON</a>
+        <a style="display: none" onclick="createJSON(this,instructionList,'InstructionList');"><i></i> Create Instruction JSON</a>
         <br>
         <br>
     </div>
     <div style="display: inline-block; float: right; width:350px;">
-        <div>
+        <div style="display: none" >
             Process:<input type="file" id="process-input" style="float: right">
         </div>
         <br>
-        <div>
+        <div style="display: none" >
             Config: <input type="file" id="config-input" style="float: right">
         </div>
         <br>
-        <div>
+        <div style="display: none" >
             Instruction Set: <input type="file" id="instruction-definitions" style="float: right" >
         </div>
     </div>
@@ -60,6 +61,7 @@
             <td width="80px">Priority</td>
             <td width="80px">&#x03C4;n+1</td>
             <td width="80px">tn</td>
+            <td width="100px">Waiting Time</td>
         </tr>
     </table>
 </div>
@@ -67,23 +69,20 @@
 
 <div>
     <div style="display: inline-block; float: left; width:600px; ">
-        <select id="instructionList" onchange="displayInstructionImplementation()" style="vertical-align: top;"></select>
-        <button id="newInstruction" onclick = "createNewInstructionType()" style="vertical-align: top;">Create a new Instruction </button>
+        <select id="instructionList" onchange="displayInstructionImplementation()" style="display: none; vertical-align: top;"></select>
+        <button id="newInstruction" onclick = "createNewInstructionType()" style="display: none; vertical-align: top;">Create a new Instruction </button>
         <br>
-        <textarea id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
+        <textarea style="display: none"  id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
         <br>
         <select id="algorithmSelection" style="vertical-align: top;">
             <option value="FCFS">FCFS</option>
-            <option value="SJF">SJF</option>
             <option value="RR">RR</option>
             <option value="Priority">Priority</option>
-            <option value="User Created">User Created</option>
-            <option value="Runtime">Runtime</option>
         </select>
 
         Time Slice(RR only): <input id="timeSlice" style="vertical-align: top;" type="text" name="timeSlice" value="1">
         <br>
-        <textarea id="userCreated" name="userCreated" onblur="saveSchedulingAlgorithm()" cols="60" rows="20"></textarea>
+        <textarea style="display: none" id="userCreated" name="userCreated" onblur="saveSchedulingAlgorithm()" cols="60" rows="20"></textarea>
     </div>
 
     <div style=" display: inline-block; width:200px; vertical-align: top">
@@ -109,7 +108,7 @@
         </div>
         <br>
         <br>
-        <div style="display: inline-block; width:200px;">
+        <div style="display: none; width:200px;">
             <div style="display: inline-block; float: left; width:100px; vertical-align: top">
                 Semaphores:
             </div>
@@ -120,7 +119,7 @@
         </div>
         <br>
         <br>
-        <div style="display: inline-block; width:200px;">
+        <div style="display: none; width:200px;">
             <div style="display: inline-block; float: left; width:100px; vertical-align: top">
                 Devices:
             </div>
@@ -136,7 +135,7 @@
 <script type="text/javascript" src="sim-0.26.js"></script>
 <script type="text/javascript" src="ExtendedSim.js"></script>
 <script type="text/javascript" src="frameworkFunctions.js"></script>
-<script type="text/javascript" src="process_mm1.js"></script>
+<script type="text/javascript" src="simulation.js"></script>
 
 <script type="text/javascript" src="JSONParsing.js"></script>
 <script type="text/javascript" src="CustomScheduler.js"></script>
@@ -151,8 +150,11 @@
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["set R1 22","inc R1","inc R1","store R1 a"],"tstart":0},    {"instructions":["set R1 22","inc R1","inc R1","inc R1","store R1 a"],"tstart":1},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":2},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":3}]');
+    displayContents('[{"instructions":["set R1 22","inc R1","inc R1","store R1 a"],"tstart":0,"priority":1},    {"instructions":["set R1 22","inc R1","inc R1","inc R1","store R1 a"],"tstart":0},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":0,"priority":2},{"instructions":["set R1 22","inc R1","inc R1","inc R1","inc R1","inc R1","inc R1","store R1 a"],"tstart":0,"priority":2}]');
 
+    boldlist = [1,2,5,9,12];
+    hiddenlist = [8,10,11];
+    animate();
 </script>
 
 </body>

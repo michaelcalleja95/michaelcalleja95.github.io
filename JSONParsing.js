@@ -101,6 +101,7 @@ function displayContents(contents) {
                     process.lastCPUTime = process.tstart;
                     process.nextCPUCycle = parseInt(configList.tau0);
                     process.lastCPUCycle = 0;
+                    process.waitingTime = 0;
 
                     //creates row for each table
                     var row = table.insertRow();
@@ -117,6 +118,7 @@ function displayContents(contents) {
                     row.insertCell(9);
                     row.insertCell(10);
                     row.insertCell(11);
+                    row.insertCell(12);
                     animate();
                 }
             };
