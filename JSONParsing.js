@@ -44,6 +44,11 @@ function loadConfig(contents)
     {
         createSemaphore(configList.semaphores[i].name,parseInt(configList.semaphores[i].value));
     }
+    for(var i =0;i<configList.sharedVariables.length;i++)
+    {
+        createSharedVariable(configList.sharedVariables[i].name,parseInt(configList.sharedVariables[i].value));
+    }
+
 }
 
 /**

@@ -19,6 +19,7 @@
     <div style=" display: inline-block; width:200px;">
         <button onclick="startAutomatedStep()">Play</button>
         <button onclick="boolean_stop = true">Pause</button>
+        <button onclick="manualStep()">Next Step</button>
         <button onclick="preempt()">Yield</button>
         <button onclick="myFunction()">Reload page</button>
         <br>
@@ -52,6 +53,7 @@
             <td width="80px">PID</td>
             <td width="80px">Entry Time</td>
             <td width="80px">Turnaround Time</td>
+            <td width="100px">Waiting Time</td>
             <td width="100px">Base Register</td>
             <td width="100px">Limit Register</td>
             <td width="120px">State</td>
@@ -61,7 +63,6 @@
             <td width="80px">Priority</td>
             <td width="80px">&#x03C4;n+1</td>
             <td width="80px">tn</td>
-            <td width="100px">Waiting Time</td>
         </tr>
     </table>
 </div>

@@ -53,9 +53,36 @@ var boldlist = [];
 var hiddenlist = [];
 
 /**
+ * a single step to the next entry/leave event
+ * afterwards visualization is done
+ */
+function manualStep() {
+    
+    //stops the automated step and calls manualStep()
+    boolean_stop = true;
+
+    //temporary assumption that IOwait will only last for 1 event
+    if(boolean_is_io_called ===true)
+    {
+        boolean_is_io_called = false;
+        iosignal("device1");
+    }
+
+    sim.step();
+    if(currentlyExecutingInstruction==="")
+        cpu.customScheduler();
+
+    //after each step the visualization needs to be updated
+    animate();
+}
+
+/**
  * boolean stop is set to false to allow for automatic steps
  */
 function startAutomatedStep(){
+
+    if(boolean_stop === false)
+        return;
     //sets flag then starts loop
     //Issue with pressing multiple Automated steps
     //manualStep();
@@ -112,10 +139,14 @@ function animate() {
 
     for (var row=0; row<rows.length;row++) {
         var cels = rows[row].getElementsByTagName('td');
-        for(var i =0;i<boldlist.length;i++)
+        if(row === 0)
         {
-            cels[parseInt(boldlist[i])].style.fontWeight = 'bold';
+            for(var i =0;i<boldlist.length;i++)
+            {
+                cels[parseInt(boldlist[i])].style.fontWeight = 'bold';
+            }
         }
+
         for(var i =0;i<hiddenlist.length;i++)
         {
             cels[parseInt(hiddenlist[i])].style.display="none";
@@ -171,7 +202,11 @@ function animate() {
         else
         {
             var cell3 =row.insertCell(3);
-            cell2.innerHTML= instructionsInMemory[i].instruction;
+            if(instructionsInMemory[i].instruction !== "compute")
+                cell2.innerHTML= instructionsInMemory[i].instruction;
+            else
+                cell2.innerHTML= "CPU Burst of 1";
+
             cell3.innerHTML= instructionsInMemory[i].address;
             if(instructionsInMemory[i].process === currentlyExecutingInstruction.process)
                 cell2.style.fontWeight= "bold";
@@ -251,19 +286,25 @@ function animate() {
         if(processControlBlock[i].id!==undefined)
         {
             var row =document.getElementById("row"+processControlBlock[i].id);
+            if(currentlyExecutingInstruction.process === processControlBlock[i].id)
+                row.style.fontWeight = "bold";
+            else
+                row.style.fontWeight = "normal";
+
             row.children[0].textContent = processControlBlock[i].id;
             row.children[1].textContent = processControlBlock[i].tstart;
             row.children[2].textContent = processControlBlock[i].finishTime;
-            row.children[3].textContent = processControlBlock[i].baseRegister;
-            row.children[4].textContent = processControlBlock[i].limitRegister;
-            row.children[5].textContent = processControlBlock[i].state;
-            row.children[6].textContent = processControlBlock[i].pc;
-            row.children[7].textContent = processControlBlock[i].lastCPUTime;
+            if(processControlBlock[i].state !== "TERMINATED");
+                row.children[3].textContent = processControlBlock[i].waitingTime;
+            row.children[4].textContent = processControlBlock[i].baseRegister;
+            row.children[5].textContent = processControlBlock[i].limitRegister;
+            row.children[6].textContent = processControlBlock[i].state;
+            row.children[7].textContent = processControlBlock[i].pc;
+            row.children[8].textContent = processControlBlock[i].lastCPUTime;
 
-            row.children[9].textContent = processControlBlock[i].priority;
-            row.children[10].textContent = processControlBlock[i].nextCPUCycle;
-            row.children[11].textContent = processControlBlock[i].lastCPUCycle;
-            row.children[12].textContent = processControlBlock[i].waitingTime;
+            row.children[10].textContent = processControlBlock[i].priority;
+            row.children[11].textContent = processControlBlock[i].nextCPUCycle;
+            row.children[12].textContent = processControlBlock[i].lastCPUCycle;
 
             if(processControlBlock[i].cpuRegisters!==undefined)
             {
@@ -277,7 +318,7 @@ function animate() {
                         registersString+= ",";
                 }
 
-                row.children[8].textContent = registersString;
+                row.children[9].textContent = registersString;
             }
         }
     }

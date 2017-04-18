@@ -19,7 +19,7 @@
     <div style=" display: inline-block; width:200px;">
         <button onclick="startAutomatedStep()">Play</button>
         <button onclick="boolean_stop = true">Pause</button>
-        <button onclick="preempt()">Yield</button>
+        <button onclick="manualStep()">Next Step</button>
         <button onclick="myFunction()">Reload page</button>
         <br>
         <br>
@@ -52,6 +52,7 @@
             <td width="80px">PID</td>
             <td width="80px">Entry Time</td>
             <td width="80px">Turnaround Time</td>
+            <td width="100px">Waiting Time</td>
             <td width="100px">Base Register</td>
             <td width="100px">Limit Register</td>
             <td width="120px">State</td>
@@ -61,7 +62,6 @@
             <td width="80px">Priority</td>
             <td width="80px">&#x03C4;n+1</td>
             <td width="80px">tn</td>
-            <td width="100px">Waiting Time</td>
         </tr>
     </table>
 </div>
@@ -75,11 +75,10 @@
         <textarea style="display: none"  id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
         <br>
         <select id="algorithmSelection" style="vertical-align: top;">
-            <option value="FCFS">FCFS</option>
             <option value="RR">RR</option>
         </select>
 
-        Time Slice(RR only): <input id="timeSlice" style="vertical-align: top;" type="text" name="timeSlice" value="1">
+        Time Slice(RR only): <input id="timeSlice" style="vertical-align: top;" type="text" name="timeSlice" value="1" readonly>
         <br>
         <textarea style="display: none" id="userCreated" name="userCreated" onblur="saveSchedulingAlgorithm()" cols="60" rows="20"></textarea>
     </div>
@@ -108,7 +107,7 @@
         <br>
         <br>
         <div style="display: inline-block; width:200px;">
-            <div style="display: inline-block; float: left; width:100px; vertical-align: top">
+            <div style="display: inline-block; float: left; width:100px; vertical-align: top; font-weight: bold">
                 Semaphores:
             </div>
             <div style="display: inline-block; float: right; width:100px; vertical-align: top"  id="semaphoreListDiv">
@@ -140,18 +139,17 @@
 <script type="text/javascript" src="CustomScheduler.js"></script>
 <script type="text/javascript" src="instructionList.js"></script>
 <script type="text/javascript">
-    loadConfig('{"scheduler":"","choice":"RR","semaphores":[],"devices":[],            "alpha":"0.5",            "tau0":10}');
+    loadConfig('{"scheduler":"","choice":"RR","semaphores":[{"name":"s1","value":1}],"sharedVariables":[{"name":"a","value":5}],"devices":[],            "alpha":"0.5",            "tau0":10}');
 
-    sharedVariables.push({"name":"a", "value":5});
-
-    instructionList=JSON.parse('[{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":1}]');
+    instructionList=JSON.parse('[{"name":"compute","implementation":"","cycles":"1"},{"name":"load","implementation":"var found = false;for (var i = 0; i < sharedVariables.length; i++) {    if(sharedVariables[i].name === parameters[0])    {       for (var j = 0; j < registers.length; j++)        {          if(registers[j].name === parameters[1])          {              registers[j].value =sharedVariables[i].value;              found = true;          }       }       if(found === false){registers.push({name: parameters[1], value:sharedVariables[i].value});       }    }}","cycles":"1"},{"name":"store","implementation":"var found = false;for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        for (var j = 0; j < sharedVariables.length; j++)         {            if(sharedVariables[j].name === parameters[1])            {               sharedVariables[j].value=registers[i].value;               found = true;               return;            }        }        if(found === false)        {            sharedVariables.push({name: parameters[1],                    value:registers[i].value});            return;        }     }}","cycles":"1"},{"name":"set","implementation":"var found = false;        for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parameters[1];                found = true;                return;            }        }        if(found === false)        {            registers.push({name: parameters[0], value:parameters[1]});        }","cycles":"1"},{"name":"goto","implementation":"jump(parseInt(parameters[0]));","cycles":"1"},{"name":"dec","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)-1;                return;            }        }","cycles":"1"},{"name":"yield","implementation":"preempted = true;","cycles":"1"},{"name":"inc","implementation":"for (var i = 0; i < registers.length; i++) {            if(registers[i].name === parameters[0])            {                registers[i].value = parseInt(registers[i].value)+1;                return;            }        }","cycles":"1"},{"name":"end","implementation":"endprocess();","cycles":"1"},{"name":"wait","implementation":"wait(parameters[0]);","cycles":"1"},{"name":"signal","implementation":"signal(parameters[0]);","cycles":"1"},{"name":"jmpe","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) ===               parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmplt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) <              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"jmpgt","implementation":"for (var i = 0; i < registers.length; i++) {    if(registers[i].name === parameters[0])    {        if(parseInt(registers[i].value) >              parseInt(parameters[1]))        {            jump(parseInt(parameters[2]));            return;        }    }}","cycles":1},{"name":"useio","implementation":"iowait(parameters[0])","cycles":1}]');
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["//process equivalent to a++","load a R1","inc R1","store R1 a"]},    {"instructions":["//process equivalent to a--","load a R1","dec R1","store R1 a"]}]');
+    displayContents('[{"instructions":["//semaphore value decreased to 0 but process","//does not wait as semaphore is not negative","wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","inc R1","store R1 a","//since semaphore value is less than","//or equal to 0 on signal other process","//is removed from waiting state","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0},{"instructions":["//semaphore value decreased to -1 so process","//is set to waiting state as semaphore is negative","wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","dec R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0}]');
 
-    boldlist = [8];
-    hiddenlist = [2,9,10,11,12];
+    boldlist = [9];
+    hiddenlist = [2,8,10,11,12];
+
     animate();
 </script>
 

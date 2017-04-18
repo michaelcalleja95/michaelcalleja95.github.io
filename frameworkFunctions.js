@@ -48,6 +48,24 @@ function endprocess()
     currentlyExecutingProcess.finishTime = sim.time()-currentlyExecutingProcess.tstart;
 }
 
+function createSharedVariable(name, value)
+{
+    var found = false;
+    //loops to check if it already exists
+    for(var i =0;i<sharedVariables.length;i++)
+    {
+        if(name === sharedVariables[i].name)
+        {
+            found = true;
+            break;
+        }
+    }
+    if(found === false)
+        sharedVariables.push({"name":name, "value":parseInt(value)});
+    else
+        alert("shared variable already exists");
+}
+
 /**
  * Creates semaphore of a specified value if it does not already exist
  * @param semaphore
