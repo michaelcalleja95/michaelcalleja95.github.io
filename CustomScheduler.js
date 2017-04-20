@@ -214,7 +214,7 @@ function scheduleNewProcess()
         {
             if (processControlBlock[i].state ==="START" || processControlBlock[i].state ==="READY")
             {
-                if(parseInt(processControlBlock[i].nextCPUCycle)<minCPUCycles)
+                if(parseFloat(processControlBlock[i].nextCPUCycle)<minCPUCycles)
                 {
                     minCPUCycles = parseFloat(processControlBlock[i].nextCPUCycle);
                     newID = processControlBlock[i].id;
