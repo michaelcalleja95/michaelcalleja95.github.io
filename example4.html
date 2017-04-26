@@ -47,6 +47,7 @@
 </div>
 
 <div style="width: 80vw">
+    <p id="helpText">  </p>
     <table id="pcbTable" style="width:800px ">
         <tr>
             <td width="80px">PID</td>
@@ -133,7 +134,7 @@
 <script type="text/javascript" src="sim-0.26.js"></script>
 <script type="text/javascript" src="ExtendedSim.js"></script>
 <script type="text/javascript" src="frameworkFunctions.js"></script>
-<script type="text/javascript" src="simulation.js"></script>
+<script type="text/javascript" src="simulationExercise.js"></script>
 
 <script type="text/javascript" src="JSONParsing.js"></script>
 <script type="text/javascript" src="CustomScheduler.js"></script>
@@ -145,10 +146,10 @@
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["//semaphore value decreased to 0 but process","//does not wait as semaphore is not negative","wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","inc R1","store R1 a","//since semaphore value is less than","//or equal to 0 on signal other process","//is removed from waiting state","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0},{"instructions":["//semaphore value decreased to -1 so process","//is set to waiting state as semaphore is negative","wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","dec R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0}]');
+    displayContents('[{"instructions":["wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","inc R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0},{"instructions":["wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","dec R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0}]');
 
     boldlist = [9];
-    hiddenlist = [2,8,10,11,12];
+    hiddenlist = [2,3,8,10,11,12];
 
     animate();
 </script>
