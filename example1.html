@@ -15,12 +15,16 @@
     <table id="memoryList">
     </table>
 </div>
+
+<div style="position: fixed">
 <div id="simulationSetup" style="width: 80vw">
     <div style=" display: inline-block; width:200px;">
-        <button onclick="startAutomatedStep()">Play</button>
-        <button onclick="boolean_stop = true">Pause</button>
+        <button onclick="startAutomatedStep()" style="display: none">Play</button>
+        <button onclick="boolean_stop = true" style="display: none">Pause</button>
         <button onclick="manualStep()">Next Step</button>
         <button onclick="myFunction()">Reload page</button>
+        <br>
+        Current Simulation Time: <a id="simTime">0</a>
         <br>
         <br>
         <a style="display: none" onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
@@ -75,8 +79,8 @@
         <textarea style="display: none"  id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
         <br>
         <select id="algorithmSelection" style="vertical-align: top;">
-            <option value="FCFS">FCFS</option>
-            <option value="RR">RR</option>
+            <option value="FCFS">First Come First Served</option>
+            <option value="RR">Round Robin</option>
             <option value="Priority">Priority</option>
         </select>
 
@@ -130,6 +134,7 @@
         </div>
     </div>
 </div>
+</div>
 
 <script type="text/javascript" src="raphael.min.js"></script>
 <script type="text/javascript" src="sim-0.26.js"></script>
@@ -147,7 +152,7 @@
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["//Burst length of 4","compute","compute","compute","compute"],"tstart":0,"priority":4},    {"instructions":["//Burst length of 5","compute","compute","compute","compute","compute"],"tstart":0,"priority":1},{"instructions":["//Burst length of 8","compute","compute","compute","compute","compute","compute","compute","compute"],"tstart":0,"priority":1},{"instructions":["//Burst length of 7","compute","compute","compute","compute","compute","compute","compute"],"tstart":0,"priority":2}]');
+    displayContents('[{"instructions":["//Burst length of 4","compute","compute","compute","compute"],"tstart":0,"priority":4},    {"instructions":["//Burst length of 5","compute","compute","compute","compute","compute"],"tstart":0,"priority":1},{"instructions":["//Burst length of 8","compute","compute","compute","compute","compute","compute","compute","compute"],"tstart":0,"priority":1},{"instructions":["//Burst length of 3","compute","compute","compute"],"tstart":0,"priority":2}]');
 
     boldlist = [1,2,3,6,10];
     hiddenlist = [8,9,11,12];

@@ -15,12 +15,15 @@
     <table id="memoryList">
     </table>
 </div>
+<div style="position: fixed">
 <div id="simulationSetup" style="width: 80vw">
     <div style=" display: inline-block; width:200px;">
-        <button onclick="startAutomatedStep()">Play</button>
-        <button onclick="boolean_stop = true">Pause</button>
+        <button onclick="startAutomatedStep()" style="display: none">Play</button>
+        <button onclick="boolean_stop = true" style="display: none">Pause</button>
         <button onclick="manualStep()">Next Step</button>
         <button onclick="myFunction()">Reload page</button>
+        <br>
+        Current Simulation Time: <a id="simTime">0</a>
         <br>
         <br>
         <a style="display: none" onclick="createJSON(this,processControlBlock,'ProcessList');"><i></i> CreateProcess JSON</a>
@@ -75,8 +78,8 @@
         <textarea style="display: none"  id="instructionImplementation" onblur="saveInstructionSet()" name="instructionImplementation" cols="60" rows="20"></textarea>
         <br>
         <select id="algorithmSelection" style="vertical-align: top;">
-            <option value="FCFS">FCFS</option>
-            <option value="RR">RR</option>
+            <option value="FCFS">First Come First Served</option>
+            <option value="RR">Round Robin</option>
         </select>
 
         Time Slice(RR only): <input id="timeSlice" style="vertical-align: top;" type="text" name="timeSlice" value="1" readonly>
@@ -128,6 +131,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script type="text/javascript" src="raphael.min.js"></script>

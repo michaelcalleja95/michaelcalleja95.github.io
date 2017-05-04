@@ -258,38 +258,38 @@ function scheduleNewProcess()
             }
             if(processControlBlock[i].state == "START")
             {
-                //sets process's pc to the end of the memory
-                for(var k = 0; k < processControlBlock[i].instructions.length; k++) {
-                    //sets base register for start location of the process which is the address of the first instruction in the
-                    //code segment. Also sets PC for this process to the first instruction
-                    if (k == 0) {
-                        processControlBlock[i].baseRegister = endPointer;
-                        processControlBlock[i].pc = endPointer;
-                    }
-
-                    if(processControlBlock[i].instructions[k][0] ==="/" && processControlBlock[i].instructions[k][1] ==="/")
-                    {
-                        instructionsInMemory.push({
-                            "instruction": processControlBlock[i].instructions[k].substr(2),
-                            "process": processControlBlock[i].id,
-                            "isComment": true
-                        });
-                    }
-                    else
-                    {
-                        //sets pc to the location of the first instruction of this process
-                        instructionsInMemory.push({
-                            "instruction": processControlBlock[i].instructions[k],
-                            "process": processControlBlock[i].id,
-                            "address": endPointer
-                        });
-                        endPointer += 32;
-                    }
-
-                }
-                //sets limit register
-                processControlBlock[i].limitRegister = endPointer-32;
-                instructionsInMemory[instructionsInMemory.length-1].finalInstruction = true;
+                // //sets process's pc to the end of the memory
+                // for(var k = 0; k < processControlBlock[i].instructions.length; k++) {
+                //     //sets base register for start location of the process which is the address of the first instruction in the
+                //     //code segment. Also sets PC for this process to the first instruction
+                //     if (k == 0) {
+                //         processControlBlock[i].baseRegister = endPointer;
+                //         processControlBlock[i].pc = endPointer;
+                //     }
+                //
+                //     if(processControlBlock[i].instructions[k][0] ==="/" && processControlBlock[i].instructions[k][1] ==="/")
+                //     {
+                //         instructionsInMemory.push({
+                //             "instruction": processControlBlock[i].instructions[k].substr(2),
+                //             "process": processControlBlock[i].id,
+                //             "isComment": true
+                //         });
+                //     }
+                //     else
+                //     {
+                //         //sets pc to the location of the first instruction of this process
+                //         instructionsInMemory.push({
+                //             "instruction": processControlBlock[i].instructions[k],
+                //             "process": processControlBlock[i].id,
+                //             "address": endPointer
+                //         });
+                //         endPointer += 32;
+                //     }
+                //
+                // }
+                // //sets limit register
+                // processControlBlock[i].limitRegister = endPointer-32;
+                // instructionsInMemory[instructionsInMemory.length-1].finalInstruction = true;
             }
             //loads process's registers
             else

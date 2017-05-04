@@ -141,6 +141,8 @@ function automatedStep() {
  */
 function animate() {
 
+    document.getElementById("simTime").innerHTML = sim.time();
+
     var tbl  = document.getElementById('pcbTable');
     var rows = tbl.getElementsByTagName('tr');
 
@@ -166,7 +168,7 @@ function animate() {
     while(instructionlist.firstChild) {
             instructionlist.removeChild(instructionlist.firstChild);
     }
-    //loops through the instructionsInMemory and changes their colour if they refer to the current exectuing process
+    //loops through the instructionsInMemory and changes their colour if they refer to the current executing process
     //or to the PC
     var titlerow = instructionlist.insertRow();
     var titlecell0 =titlerow.insertCell(0);
@@ -209,16 +211,21 @@ function animate() {
         else
         {
             var cell3 =row.insertCell(3);
-            if(instructionsInMemory[i].instruction !== "compute")
+            //if(instructionsInMemory[i].instruction !== "compute")
                 cell2.innerHTML= instructionsInMemory[i].instruction;
-            else
-                cell2.innerHTML= "CPU Burst of 1";
+            //else
+            //    cell2.innerHTML= "CPU Burst of 1";
 
-            cell3.innerHTML= instructionsInMemory[i].address;
+            cell3.innerHTML= instructionsInMemory[i].address.toString(16);
             if(instructionsInMemory[i].process === currentlyExecutingInstruction.process)
                 cell2.style.fontWeight= "bold";
             if(instructionsInMemory[i].address === currentlyExecutingProcess.pc)
+            {
                 cell1.innerHTML=" &rarr;";
+                cell2.style.color = 'red';
+                row.id = "selectedID";
+                document.getElementById("selectedID").scrollIntoView();
+            }
             if(instructionsInMemory[i].finalInstruction === true)
             {
                 cell1.style.borderBottomStyle= "solid";
@@ -303,10 +310,10 @@ function animate() {
             row.children[2].textContent = processControlBlock[i].finishTime;
             if(processControlBlock[i].state !== "TERMINATED");
                 row.children[3].textContent = processControlBlock[i].waitingTime;
-            row.children[4].textContent = processControlBlock[i].baseRegister;
-            row.children[5].textContent = processControlBlock[i].limitRegister;
+            row.children[4].textContent = processControlBlock[i].baseRegister.toString(16);;
+            row.children[5].textContent = processControlBlock[i].limitRegister.toString(16);;
             row.children[6].textContent = processControlBlock[i].state;
-            row.children[7].textContent = processControlBlock[i].pc;
+            row.children[7].textContent = processControlBlock[i].pc.toString(16);;
             row.children[8].textContent = processControlBlock[i].lastCPUTime;
 
             row.children[10].textContent = processControlBlock[i].priority;

@@ -124,6 +124,40 @@ function displayContents(contents) {
                     row.insertCell(10);
                     row.insertCell(11);
                     row.insertCell(12);
+
+                    //sets process's pc to the end of the memory
+                    for(var k = 0; k < process.instructions.length; k++) {
+                        //sets base register for start location of the process which is the address of the first instruction in the
+                        //code segment. Also sets PC for this process to the first instruction
+                        if (k == 0) {
+                            process.baseRegister = endPointer;
+                            process.pc = endPointer;
+                        }
+
+                        if(process.instructions[k][0] ==="/" && process.instructions[k][1] ==="/")
+                        {
+                            instructionsInMemory.push({
+                                "instruction": process.instructions[k].substr(2),
+                                "process": process.id,
+                                "isComment": true
+                            });
+                        }
+                        else
+                        {
+                            //sets pc to the location of the first instruction of this process
+                            instructionsInMemory.push({
+                                "instruction": process.instructions[k],
+                                "process": process.id,
+                                "address": endPointer
+                            });
+                            endPointer += 32;
+                        }
+
+                    }
+                    //sets limit register
+                    process.limitRegister = endPointer-32;
+                    instructionsInMemory[instructionsInMemory.length-1].finalInstruction = true;
+
                     animate();
                 }
             };
