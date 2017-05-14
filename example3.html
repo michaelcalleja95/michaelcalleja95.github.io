@@ -59,7 +59,7 @@
             <td width="100px">Base Register</td>
             <td width="100px">Limit Register</td>
             <td width="120px">State</td>
-            <td width="80px">PC</td>
+            <td width="80px">Program Counter</td>
             <td width="100px">Last Used CPU</td>
             <td width="120px">Registers</td>
             <td width="80px">Priority</td>
@@ -150,10 +150,10 @@
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["//process equivalent to a++","//Loads value of a to R1","load a R1","//increments value of R1","inc R1","//stores R1 value to variable a","store R1 a"]},    {"instructions":["//process equivalent to a--","//Loads value of a to R1","load a R1","//decrements value of R1","dec R1","//stores R1 value to variable a","store R1 a"]}]');
+    displayContents('[{"instructions":["//process equivalent to a++","//Loads value of a to R1","load a R1","//increments value of R1","inc R1","//stores R1 value to variable a","store R1 a"]},    {"instructions":["//process equivalent to a--","//Loads value of a to R2","load a R2","//decrements value of R2","dec R2","//stores R2 value to variable a","store R2 a"]}]');
 
     boldlist = [9];
-    hiddenlist = [2,3,8,10,11,12];
+    hiddenlist = [2,3,4,5,8,10,11,12];
     animate();
 </script>
 

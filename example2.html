@@ -60,7 +60,7 @@
             <td width="100px">Base Register</td>
             <td width="100px">Limit Register</td>
             <td width="120px">State</td>
-            <td width="80px">PC</td>
+            <td width="80px">Program Counter</td>
             <td width="100px">Last Used CPU</td>
             <td width="120px">Registers</td>
             <td width="80px">Priority</td>
@@ -150,9 +150,9 @@
     populateInstructionList();
     displayInstructionImplementation();
 
-    displayContents('[{"instructions":["compute","compute","compute","compute","compute","useio device1","compute","compute","useio device1","compute"],"tstart":0},    {"instructions":["compute","compute","compute","compute","compute","compute","useio device1","compute","compute","useio device1","compute"],"tstart":0},   {"instructions":["compute","compute","compute","useio device1","compute","compute","compute","compute","compute","compute","compute","useio device1","compute"],"tstart":0}, {"instructions":["compute","compute","compute","useio device1","compute","compute","useio device1","compute"],"tstart":0}]');
+    displayContents('[{"instructions":["compute","compute","compute","compute","compute","useio device1","compute","compute","useio device1","compute"],"tstart":0},    {"instructions":["compute","compute","compute","compute","compute","compute","useio device1","compute","compute","useio device1","compute"],"tstart":0},   {"instructions":["compute","compute","compute","useio device1","compute","compute","compute","compute","compute","compute","compute","useio device1","compute"],"tstart":0},]');
     boldlist = [6,11,12];
-    hiddenlist = [2,3,8,9,10];
+    hiddenlist = [2,3,4,5,8,9,10];
     animate();
 </script>
 

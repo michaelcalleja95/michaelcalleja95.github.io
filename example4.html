@@ -154,7 +154,7 @@
     displayContents('[{"instructions":["wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","inc R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0},{"instructions":["wait s1","//critical section that should not be","//interrupted by another critical section","load a R1","dec R1","store R1 a","signal s1","//remainder of the code that is not critical","compute","compute","compute","yield"],"tstart":0}]');
 
     boldlist = [9];
-    hiddenlist = [2,3,8,10,11,12];
+    hiddenlist = [2,3,4,5,8,10,11,12];
 
     animate();
 </script>
